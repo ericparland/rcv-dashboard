@@ -20,7 +20,7 @@ import UpdateButton from './UpdateButton'
 
 const dataTimelines = {
       rows: [
-      [ 'John',  'Desktop App', '#32CD32',   new Date(0,0,0,16,30,0),  new Date(0,0,0,19,0,0) ],
+      [ 'John',  'Desktop Apppp', '#32CD32',   new Date(0,0,0,16,30,0),  new Date(0,0,0,19,0,0) ],
       [ 'John',  'Desktop App', '#FF3E33',   new Date(0,0,0,19,0,0),  new Date(0,0,0,23,0,0) ],
       [ 'John1',  'Mobile App - iOS','#32CD32', new Date(0,0,0,16,30,0), new Date(0,0,0,19,0,0) ],
       [ 'Claire', 'Desktop App', '#FF3E33',  new Date(0,0,0,13,30,0), new Date(0,0,0,14,3,0) ],
