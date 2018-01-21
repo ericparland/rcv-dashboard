@@ -8,7 +8,8 @@ import Button from 'material-ui/Button';
 
 import EnhancedTable from './EnhancedTable'
 import ColumnChart from './ColumnChart'
-import TimelineChart from '../components/TimelineChart';
+import TimelineChartIn from '../components/TimelineChartIn';
+import TimelineChartOut from '../components/TimelineChartOut';
 import 'whatwg-fetch'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
@@ -272,7 +273,10 @@ class BasicTabsWrappedLabel extends React.Component {
         </TabContainer>}
         {value === 'two' && <TabContainer>
           <div>
-            <TimelineChart hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
+            <h3>Sessions In</h3>
+            <TimelineChartIn hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
+            <h3>Sessions Out</h3>
+            <TimelineChartOut hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
             <SessionTable hub_id={hub_id} changeTabHub={this.changeTab}/>
           </div>
         </TabContainer>}
