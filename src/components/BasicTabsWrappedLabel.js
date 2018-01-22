@@ -12,11 +12,18 @@ import TimelineChartIn from '../components/TimelineChartIn';
 import TimelineChartOut from '../components/TimelineChartOut';
 import 'whatwg-fetch'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import LineChartBitrateOut from '../components/LineChartBitrateOut';
+import LineChartBitrateIn from '../components/LineChartBitrateIn';
+
+
 
 import SessionTable from './SessionTable'
 
 
 import UpdateButton from './UpdateButton'
+
+
+import { Link } from 'react-router-dom'
 
 //http://bda01-t01-hsd02.lab.nordigy.ru:3000/public/question/15a3a3b0-b5e3-4cb9-97bf-888c977959aa
 const test_data_timelines = {
@@ -117,6 +124,11 @@ const dataTimelines = {
       }
     ]};
 
+const LineChart = {
+      rows: [
+      [new Date(1514277004106), 0, 0], 
+    ],
+  }
 
 const dataTimelines2 = {
       rows: [
@@ -212,16 +224,19 @@ class BasicTabsWrappedLabel extends React.Component {
       this.state = {
         value: 'one',
         hub_id: '',
+        session_id: '',
       }
       this.changeTab = this.changeTab
       this.hub_id = this.hub_id
+      this.session_id = this.session_id
   }
 
   changeTab = (value) => {this.setState({value})}
   hub_id = (hub_id) => {this.setState({hub_id})}
+  session_id = (session_id) => {this.setState({session_id})}
 
-  handleChange = (event, value, hub_id) => {
-    this.setState({value: value, hub_id: hub_id});
+  handleChange = (event, value, hub_id, session_id) => {
+    this.setState({value: value, hub_id: hub_id, session_id: session_id});
   };
 
 
@@ -247,7 +262,7 @@ class BasicTabsWrappedLabel extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { value, hub_id } = this.state;
+    const { value, hub_id, session_id } = this.state;
 
     return (
       <div className={classes.root}>
@@ -257,12 +272,13 @@ class BasicTabsWrappedLabel extends React.Component {
           <Tabs
             value={value}
             hub_id={hub_id}
+            session_id={session_id}
             onChange={this.handleChange}
             centered
           >
-            <Tab value="one" label="Overview" />
-            <Tab value="two" label="Conference Details" />
-            <Tab value="three" label="Session Details" />
+            <Tab value="one" label="Overview"  path="/one"/>
+            <Tab value="two" label="Conference Details" disabled />
+            <Tab value="three" label="Session Details" disabled  />
           </Tabs>
         </AppBar>
         {value === 'one' && <TabContainer>
@@ -277,10 +293,14 @@ class BasicTabsWrappedLabel extends React.Component {
             <TimelineChartIn hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
             <h3>Sessions Out</h3>
             <TimelineChartOut hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
-            <SessionTable hub_id={hub_id} changeTabHub={this.changeTab}/>
+            <SessionTable hub_id={hub_id} session_id={this.session_id} changeTabHub={this.changeTab}/>
           </div>
         </TabContainer>}
-        {value === 'three' && <TabContainer>Item Three</TabContainer>}
+        {value === 'three' && <TabContainer>
+        <h3>Session ID {session_id}</h3>
+        <LineChartBitrateOut session_id={session_id} rows={LineChart.rows}/>
+        <LineChartBitrateIn session_id={session_id} rows={LineChart.rows}/>
+        </TabContainer>}
       </div>
     );
   }

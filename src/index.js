@@ -6,6 +6,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Home from './components/Home';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
+import { Router, useRouterHistory } from 'react-router';
+import {createHashHistory} from 'history';
 
 
 //TMP dependacy for material
@@ -26,5 +28,8 @@ const routes = {
   ]
 };
 
-ReactDOM.render(<ResponsiveDrawer />, document.getElementById('root'));
+ReactDOM.render(
+  <ResponsiveDrawer />,
+    //<Router history={useRouterHistory(createHashHistory)({queryKey: false})} routes={routes} />,
+  document.getElementById('root'));
 registerServiceWorker();

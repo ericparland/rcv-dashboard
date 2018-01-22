@@ -112,6 +112,7 @@ export default class TimelineChartIn extends Component {
       rows: props.rows,
       columns: props.columns,
       options: {
+        timeline: {tooltipDateFormat: 'yyyy-MM-dd HH:MM:ss.SSS' }
       //  colors: ['#cbb69d', '#603913', '#c69c6e'],
       },
       hub_id: props.hub_id,

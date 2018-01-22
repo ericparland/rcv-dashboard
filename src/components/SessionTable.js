@@ -48,7 +48,7 @@ for (var i = 0; i < array.length; i++) {
         }
 
 
-let test_data = [["5746ca6c-9645-46ee-9824-6c106ed445af","2017-12-22T12:42:15.000Z","2017-12-22T12:50:15.000Z",0,97,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["eb1a8e98-1840-4786-8955-ad361a92b9a5","2017-12-22T12:42:00.000Z","2017-12-22T12:42:00.000Z",0,1,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["7e8faf76-08bf-4477-9181-0407f0f3a646","2017-12-22T12:40:35.000Z","2017-12-22T12:40:50.000Z",0,4,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["7a33dba5-66f4-49df-94e6-93bcf46938f9","2017-12-22T12:39:40.000Z","2017-12-22T15:38:41.000Z",12,5,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["53daf8fb-b00c-4afb-94b8-0a4380c8f9c4","2017-12-22T12:50:30.000Z","2017-12-22T15:37:36.000Z",2,673,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["6deab9c7-2b0d-4c98-8a92-ed951cfe4678","2017-12-22T15:37:56.000Z","2017-12-22T15:38:31.000Z",0,8,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["7ce0860c-9885-4b52-9538-9d6da03dca76","2017-12-22T12:40:00.000Z","2017-12-22T12:40:20.000Z",0,5,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["bf518afa-d8b3-48bb-9488-2cf51a5e3e00","2017-12-22T12:39:30.000Z","2017-12-22T12:39:55.000Z",1,3,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["e02de0b6-1d40-4de0-8c6b-27b5e031fa79","2017-12-22T12:40:55.000Z","2017-12-22T12:41:55.000Z",0,3,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"],["629a2ed7-d08d-4006-8099-3c3443c868b3","2017-12-22T15:37:46.000Z","2017-12-22T15:37:51.000Z",0,2,"rnd10-t02-ndb0181a73ced1607e3c39d6113_1513946364640"]]
+let test_data = [["Loading...","","","","","Loading..."]]
 
 
 
@@ -254,9 +254,13 @@ class SessionTable extends React.Component {
   };
 
   handleClick = (event, id) => {
-    const { selected } = this.state;
-    console.log(createData1(test_data)[id-1]);
+    const { selected, data } = this.state;
+    var cc = data.map(function (img) { return img.id; }).indexOf(id);
     this.props.changeTabHub('three')
+    
+    console.log(data[cc].session_id);
+    this.props.session_id(data[cc].session_id)
+
   };
 
   handleChangePage = (event, page) => {

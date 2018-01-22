@@ -261,9 +261,11 @@ class EnhancedTable extends React.Component {
 
   handleClick = (event, id) => {
     const { selected, data } = this.state;
-    console.log(data[id-1].rcv_hub_id);
+    //console.log(data[id-1].rcv_hub_id);
+    var pp = data.map(function (img) { return img.id; }).indexOf(id);
+    console.log(data[pp].rcv_hub_id);
     this.props.changeTabHub('two')
-    this.props.hub_id(data[id-1].rcv_hub_id)
+    this.props.hub_id(data[pp].rcv_hub_id)
   };
 
   handleChangePage = (event, page) => {
