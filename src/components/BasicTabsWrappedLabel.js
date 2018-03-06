@@ -5,30 +5,25 @@ import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
-import EnhancedTable from './EnhancedTable'
-import ColumnChart from './ColumnChart'
-import TimelineChartIn from '../components/TimelineChartIn';
-import TimelineChartOut from '../components/TimelineChartOut';
 import 'whatwg-fetch'
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import LineChartBitrateOut from '../components/LineChartBitrateOut';
-import LineChartBitrateIn from '../components/LineChartBitrateIn';
 
-
-
+import LineChartBitrateOut from './LineChartBitrateOut';
+import LineChartBitrateIn from './LineChartBitrateIn';
+import ConferenceTable from './ConferenceTable'
+import ColumnChart from './ColumnChart'
+import TimelineChartIn from './TimelineChartIn';
+import TimelineChartOut from './TimelineChartOut';
 import SessionTable from './SessionTable'
 
 
-import UpdateButton from './UpdateButton'
 
 
-import { Link } from 'react-router-dom'
-
-//http://bda01-t01-hsd02.lab.nordigy.ru:3000/public/question/15a3a3b0-b5e3-4cb9-97bf-888c977959aa
-const test_data_timelines = {
-
-}
 
 function componentToHex(c) {
     var hex = c.toString(16);
@@ -93,7 +88,6 @@ function numberToColorHsl(i, min, max) {
     return "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
 }
 
-//alert(numberToColorHsl(shade,0,1))
 
 
 
@@ -126,68 +120,19 @@ const dataTimelines = {
 
 const LineChart = {
       rows: [
-      [new Date(1514277004106), 0, 0], 
+      [new Date(1514277004106), 0, 0],
     ],
   }
 
-const dataTimelines2 = {
-      rows: [
-      [ 'John',  'Desktop Apppp',  numberToColorHsl(shade,0,1) ,   new Date(0,0,0,16,30,0),  new Date(0,0,0,19,0,0) ],
-      [ 'John',  'Desktop App', '#FF3E33',   new Date(0,0,0,19,0,0),  new Date(0,0,0,23,0,0) ],
-      [ 'John1',  'Mobile App - iOS','#32CD32', new Date(0,0,0,16,30,0), new Date(0,0,0,19,0,0) ],
-      [ 'Claire', 'Desktop App', '#FF3E33',  new Date(0,0,0,13,30,0), new Date(0,0,0,14,3,0) ],
-      [ 'Claire', 'Mobile App - Android',   '#32CD32',    new Date(0,0,0,14,30,0), new Date(0,0,0,19,0,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS', '#32CD32',      new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS',       '#FF3E33',      new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,30) ],
-      [ 'Billy Bob',   'Mobile App - iOS',   '#32CD32',       new Date(0,0,0,16,30,0), new Date(0,0,0,18,30,0) ],
-      [ 'Billy Bob1',   'Mobile App - iOS', '#32CD32',      new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-      [ 'Billy Bob1',   'Mobile App - iOS',       '#FF3E33',      new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,30) ],
-      [ 'Billy Bob1',   'Mobile App - iOS',   '#32CD32',       new Date(0,0,0,16,30,0), new Date(0,0,0,18,30,0) ],
-      [ 'Billy Bob2',   'Mobile App - iOS', '#32CD32',      new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-      [ 'Billy Bob3',   'Mobile App - iOS',       '#FF3E33',      new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,30) ],
-      [ 'Billy Bob',   'Mobile App - iOS',   '#32CD32',       new Date(0,0,0,16,30,0), new Date(0,0,0,18,30,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS', '#32CD32',      new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS',       '#FF3E33',      new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,30) ],
-      [ 'Billy Bob',   'Mobile App - iOS',   '#32CD32',       new Date(0,0,0,16,30,0), new Date(0,0,0,18,30,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS', '#32CD32',      new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-      [ 'Billy Bob',   'Mobile App - iOS',       '#FF3E33',      new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,30) ],
-      [ 'Billy Bob',   'Mobile App - iOS',   '#32CD32',       new Date(0,0,0,16,30,0), new Date(0,0,0,23,30,0) ]
-    ],
-    columns: [
-      {
-        "id": "Room",
-        "type": "string"
-      },
-      {
-        "id": "Name",
-        "type": "string"
-      },
-      {
-        type: 'string',
-        role: 'style'
-      },
-      {
-        "id":"Start",
-        "type":"date"
-      },
-      {
-        "id":"End",
-        "type":"date"
-      }
-    ]};
 
 var  hub_list = {}
 
 
 
 function hub_data() {
-    fetch('/api/public/card/b5e706d3-0b04-48b7-8854-00d780d39c68/query')
+    fetch('/rcv-api/public/card/33b08f09-3498-41ab-8fb9-b6098e379c5b/query')
   .then(function(response) {
     return response.json()
-  }).then(function(json) {
-    console.log('parsed json', json)
-  }).catch(function(ex) {
-    console.log('parsing failed', ex)
   })
 }
 
@@ -225,36 +170,34 @@ class BasicTabsWrappedLabel extends React.Component {
         value: 'one',
         hub_id: '',
         session_id: '',
+        participant_name: '',
       }
       this.changeTab = this.changeTab
       this.hub_id = this.hub_id
       this.session_id = this.session_id
+      this.participant_name = this.participant_name
   }
 
   changeTab = (value) => {this.setState({value})}
   hub_id = (hub_id) => {this.setState({hub_id})}
   session_id = (session_id) => {this.setState({session_id})}
+  participant_name = (participant_name) => {this.setState({participant_name})}
 
-  handleChange = (event, value, hub_id, session_id) => {
-    this.setState({value: value, hub_id: hub_id, session_id: session_id});
+
+  handleChange = (event, value, hub_id, session_id, participant_name) => {
+    this.setState({value: value, hub_id: hub_id, session_id: session_id, participant_name: participant_name});
   };
 
 
 
 
   handleClick = () => {
-    fetch('/api/public/card/b5e706d3-0b04-48b7-8854-00d780d39c68/query')
+    fetch('/rcv-api/public/card/33b08f09-3498-41ab-8fb9-b6098e379c5b/query')
   .then(function(response) {
-    showLoading()
-    hideLoading()
     return response.json()
   }).then(function(json) {
     hub_list = json.data.rows
-    console.log('parsed json', hub_list)
   }).catch(function(ex) {
-    showLoading()
-    hideLoading()
-    console.log('parsing failed', ex)
   })
   }
 
@@ -262,45 +205,53 @@ class BasicTabsWrappedLabel extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { value, hub_id, session_id } = this.state;
+    const { value, hub_id, session_id, participant_name } = this.state;
 
     return (
       <div className={classes.root}>
-
         <AppBar position="static">
 
           <Tabs
             value={value}
             hub_id={hub_id}
             session_id={session_id}
+            participant_name={participant_name}
             onChange={this.handleChange}
             centered
           >
-            <Tab value="one" label="Overview"  path="/one"/>
-            <Tab value="two" label="Conference Details" disabled />
-            <Tab value="three" label="Session Details" disabled  />
+            <Tab value="one" label="Overview"  route="/overview" />
+            <Tab value="two" label="Conference Details" route="/conference" disabled />
+            <Tab value="three" label="Session Details" route="/session" disabled  />
           </Tabs>
         </AppBar>
         {value === 'one' && <TabContainer>
           <div>
             <ColumnChart/>
-            <EnhancedTable  hub_id={this.hub_id} changeTabHub={this.changeTab} />
+            <ConferenceTable  hub_id={this.hub_id} changeTabHub={this.changeTab} />
           </div>
         </TabContainer>}
         {value === 'two' && <TabContainer>
           <div>
-            <h3>Sessions In</h3>
-            <TimelineChartIn hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
-            <h3>Sessions Out</h3>
-            <TimelineChartOut hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns}/>
-            <SessionTable hub_id={hub_id} session_id={this.session_id} changeTabHub={this.changeTab}/>
+            <h3>Senders</h3>
+            <TimelineChartIn hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns} session_id={this.session_id} participant_name={this.participant_name}  changeTabHub={this.changeTab}/>
+            <h3>Receivers</h3>
+            <TimelineChartOut hub_id={hub_id} rows={dataTimelines.rows} columns={dataTimelines.columns} session_id={this.session_id}  participant_name={this.participant_name} changeTabHub={this.changeTab}/>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Sessions Table</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <SessionTable hub_id={hub_id} session_id={this.session_id} changeTabHub={this.changeTab}/>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           </div>
         </TabContainer>}
         {value === 'three' && <TabContainer>
-        <h3>Session ID {session_id}</h3>
+        <h3>Participant: {participant_name}, Session ID: {session_id}</h3>
         <LineChartBitrateOut session_id={session_id} rows={LineChart.rows}/>
         <LineChartBitrateIn session_id={session_id} rows={LineChart.rows}/>
         </TabContainer>}
+
       </div>
     );
   }

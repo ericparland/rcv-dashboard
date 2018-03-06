@@ -65,19 +65,21 @@ function numberToColorHsl(i, min, max) {
     return "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
 }
 
-const test_data = {"data":{"columns":["val","start_ts","end_ts","session_id","hub_id","name","sessionid","participantid","accountid","extensionid"],"cols":[{"name":"val","display_name":"Val","base_type":"type/Float","remapped_to":null,"remapped_from":null},{"name":"start_ts","display_name":"Start Ts","base_type":"type/Integer","remapped_to":null,"remapped_from":null},{"name":"end_ts","display_name":"End Ts","base_type":"type/Integer","remapped_to":null,"remapped_from":null},{"name":"session_id","display_name":"Session ID","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"hub_id","display_name":"Hub ID","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"name","display_name":"Name","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"sessionid","display_name":"Sessionid","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"participantid","display_name":"Participantid","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"accountid","display_name":"Accountid","base_type":"type/Text","remapped_to":null,"remapped_from":null},{"name":"extensionid","display_name":"Extensionid","base_type":"type/Text","remapped_to":null,"remapped_from":null}],"rows":[[0.9166666666666666,1514277004106,1514277059112,"b28fa11c-6af1-4c03-b1ee-c5d3a4320007","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Sergey Vengerskiy","b28fa11c-6af1-4c03-b1ee-c5d3a4320007","08481418-b63f-4256-b7ad-7e01cd22d332","400129656008","400129689008"],[1.0,1514276974104,1514276979105,"8a57ad59-ee50-4b99-ab40-9ee346375766","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","web","8a57ad59-ee50-4b99-ab40-9ee346375766","e21f6c05-b9a0-481e-8c33-907b6d8df84c","guest","6f6f6a13-2f3f-4411-b658-6c0089bba154"],[1.0,1514276964103,1514276999106,"145aaf22-872d-46a5-8c31-c5ac98f51102","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Vivek Raje","145aaf22-872d-46a5-8c31-c5ac98f51102","3d2ad74a-f181-49dd-b9a1-dce40668609b","400129656008","400129690008"],[1.0,1514277004107,1514277004107,"d4976037-3a75-4102-b740-2914563bf414","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Akashek Anchliya","d4976037-3a75-4102-b740-2914563bf414","c335b5e9-405c-4be5-9e4c-ea00845a0e6e","400129656008","400129691008"],[0.5454545454545454,1514277004107,1514277059112,"145aaf22-872d-46a5-8c31-c5ac98f51102","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Vivek Raje","145aaf22-872d-46a5-8c31-c5ac98f51102","3d2ad74a-f181-49dd-b9a1-dce40668609b","400129656008","400129690008"],[1.0,1514277064112,1514277104116,"b28fa11c-6af1-4c03-b1ee-c5d3a4320007","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Sergey Vengerskiy","b28fa11c-6af1-4c03-b1ee-c5d3a4320007","08481418-b63f-4256-b7ad-7e01cd22d332","400129656008","400129689008"],[1.0,1514277064112,1514277104116,"145aaf22-872d-46a5-8c31-c5ac98f51102","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Vivek Raje","145aaf22-872d-46a5-8c31-c5ac98f51102","3d2ad74a-f181-49dd-b9a1-dce40668609b","400129656008","400129690008"],[1.0,1514276974104,1514276999106,"d4976037-3a75-4102-b740-2914563bf414","rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163","Akashek Anchliya","d4976037-3a75-4102-b740-2914563bf414","c335b5e9-405c-4be5-9e4c-ea00845a0e6e","400129656008","400129691008"]]},"json_query":{"parameters":[{"type":"category","target":["variable",["template-tag","rcv_hub_id"]],"value":"rnd10-t01-ndb01933fd9c016091f0a647abf_1514276956163"}]},"status":"completed"}
 
 
-
-function createData2(array) {
-    var test_data_prepared=[]
+function createDataTimelineChartIn(array) {
+    var data_prepared=[]
 for (var i = 0; i < array.length; i++) {
           if(array[i+1]!== undefined) {
             if(array[i][3] == array[i+1][3]) {
               array[i][2] = array[i+1][1];
             }
           }
-					test_data_prepared.push (
+          //Google Charts cannot handle timeline less than 1 second
+          if(array[i][2]-array[i][1] < 1000) {
+              array[i][2] = array[i][2] + 1000;
+          }
+					data_prepared.push (
           [
             array[i][5],
             array[i][3],
@@ -85,54 +87,80 @@ for (var i = 0; i < array.length; i++) {
             new Date(array[i][1]),
             new Date(array[i][2])
           ]
-          //{
-					//id: i+1,
-          //session_id: array[i][0],
-					///start_ts: array[i][1],
-					//end_ts: array[i][2],
-					//err_in: array[i][3],
-					//err_out: array[i][4],
-					//rcv_hub_id: array[i][5]
-					//}
         );
 					}
-          console.log(test_data_prepared)
-          return test_data_prepared;
+          return data_prepared;
         }
-
-
 
 export default class TimelineChartIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading2: false,
+      error: null,
       chartType: 'Timeline',
       width: "100%",
       chartPackages: ['timeline'],
       rows: props.rows,
       columns: props.columns,
       options: {
-        timeline: {tooltipDateFormat: 'yyyy-MM-dd HH:MM:ss.SSS' }
+        timeline: {tooltipDateFormat: 'yyyy-MM-dd HH:mm:ss.SSS', showBarLabels: false }
       //  colors: ['#cbb69d', '#603913', '#c69c6e'],
       },
       hub_id: props.hub_id,
+      session_id: props.session_id,
+      participant_name: props.participant_name
     };
+    this.handleSelectCallback = this.handleSelectCallback.bind(this);
   }
 
   componentDidMount  = () => {
-    fetch('/api/public/card/d2caf845-cc8c-457d-ac40-a0832b6c3cbd/query?parameters=%5B%7B"type"%3A"category"%2C"target"%3A%5B"variable"%2C%5B"template-tag"%2C"rcv_hub_id"%5D%5D%2C"value"%3A%22' + this.state.hub_id + '%22%7D%5D')
-    .then(function(response) {
-    return response.json()
-    }).then(function(json) {
-    console.log('parsed json', json.data.rows)
-    const data_new = createData2(json.data.rows);
+    fetch('/rcv-api/public/card/42b82298-aab2-4768-b89d-9ad4ea9fa605/query?parameters=%5B%7B"type"%3A"category"%2C"target"%3A%5B"variable"%2C%5B"template-tag"%2C"rcv_hub_id"%5D%5D%2C"value"%3A%22' + this.state.hub_id + '%22%7D%5D')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Something went wrong ...');
+        }
+        })
+    .then(function(json) {
+    const data_new = createDataTimelineChartIn(json.data.rows);
     this.setState( { rows: data_new });
     }.bind(this)).catch(function(ex) {
     console.log('parsing failed', ex)
+    .then(data => this.setState({ isLoading2: false }))
+    .catch(error => this.setState({ error, isLoading: false }))
   })
 }
 
+
+
+handleSelectCallback(chart) {
+  var i = chart.chart.getSelection()[0].row;
+  console.log('Selected ', chart.props.rows[i]);
+
+  this.setState({
+    session_id : chart.props.rows[i][1],
+    participant_name: chart.props.rows[i][0]
+  });
+  this.props.session_id(this.state.session_id);
+  this.props.participant_name(this.state.participant_name)
+  this.props.changeTabHub('three')
+}
+
   render() {
+    const { classes } = this.props;
+    const { isLoading2, error } = this.state;
+    var changeTab  =   this.props.changeTab;
+
+    if (error) {
+      return <p>{error.message}</p>;
+    }
+
+    if (isLoading2) {
+      return <p>Loading ...</p>;
+    }
+
     return (
       <Chart
         chartType="Timeline"
@@ -143,6 +171,10 @@ export default class TimelineChartIn extends Component {
         width={'100%'}
         height={'400px'}
         legend_toggle
+        chartEvents={[{
+          eventName: 'select',
+          callback: this.handleSelectCallback
+        }]}
       />
     );
   }

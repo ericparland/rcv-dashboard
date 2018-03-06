@@ -5,10 +5,12 @@ export default class ColumnChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
+      error: null,
       chartType: "Bar",
       width: "100%",
       chartPackages: ['timeline'],
-      rows: [ ["2017-12-20", 0, 0]
+      rows: [ ["0000-00-00", 0, 0]
     ],
       columns: [
         {
@@ -35,26 +37,41 @@ export default class ColumnChart extends Component {
           }
         },
         vAxis: {
-          title: 'Rating (scale of 1-10)'
+          title: 'Count'
         }
       },
     };
   }
 
   componentDidMount  = () => {
-    fetch('/api/public/card/d2517e9b-fb2d-4aa6-8d1e-b98ccdb18273/query')
-    .then(function(response) {
-    return response.json()
-    }).then(function(json) {
-    console.log('parsed json', json.data.rows)
-    const data_new = json.data.rows;
-    this.setState( { rows: data_new });
-    }.bind(this)).catch(function(ex) {
-    console.log('parsing failed', ex)
-  })
+    fetch('/rcv-api/public/card/091a31d1-9a95-4584-97da-9d25409bbe94/query')
+      .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+    })
+    .then(function(json) {
+      const data_new = json.data.rows;
+      this.setState( { rows: data_new });
+      }.bind(this)).catch(function(ex) {
+      console.log('parsing failed', ex)
+    }).then(data => this.setState({ isLoading: false }))
+      .catch(error => this.setState({ error, isLoading: false }))
 }
 
   render() {
+    const { isLoading, error } = this.state;
+
+    if (error) {
+      return <p>{error.message}</p>;
+    }
+
+    if (isLoading) {
+      return <p>Loading ...</p>;
+    }
+
     return (
       <Chart
         chartType="Bar"

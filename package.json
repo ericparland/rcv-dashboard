@@ -2,6 +2,7 @@
   "name": "rcv-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://data.corp.ringcentral.com/rcv-dashboard",
   "dependencies": {
     "material-ui": "^1.0.0-beta.10",
     "material-ui-icons": "^1.0.0-alpha.19",

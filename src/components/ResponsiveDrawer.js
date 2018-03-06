@@ -12,10 +12,15 @@ import Divider from 'material-ui/Divider';
 import MenuIcon from 'material-ui-icons/Menu';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import BasicTabsWrappedLabel from './BasicTabsWrappedLabel';
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 
 
 const drawerWidth = 240;
+
 
 const styles = theme => ({
   root: {
@@ -91,6 +96,7 @@ class ResponsiveDrawer extends React.Component {
 
     return (
       <div className={classes.root}>
+
         <div className={classes.appFrame}>
           <AppBar className={classes.appBar}>
             <Toolbar>
@@ -138,6 +144,13 @@ class ResponsiveDrawer extends React.Component {
             <BasicTabsWrappedLabel/>
           </main>
         </div>
+        <Router>
+         <div>
+        <Route exact path="/overview"/>
+        <Route path="/conference" />
+        <Route path="/session"/>
+         </div>
+        </Router>
       </div>
     );
   }

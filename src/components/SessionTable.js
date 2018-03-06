@@ -30,10 +30,10 @@ function createData(name, calories, fat, carbs, protein) {
   return { id: counter, name, calories, fat, carbs, protein };
 }
 
-function createData1(array) {
-    var test_data_prepared=[]
+function createDataSession(array) {
+    var data_prepared=[]
 for (var i = 0; i < array.length; i++) {
-					test_data_prepared.push ({
+					data_prepared.push ({
 					id: i+1,
           session_id: array[i][0],
 					start_ts: array[i][1],
@@ -43,8 +43,7 @@ for (var i = 0; i < array.length; i++) {
 					rcv_hub_id: array[i][5]
 					});
 					}
-          console.log(test_data_prepared)
-          return test_data_prepared;
+          return data_prepared;
         }
 
 
@@ -202,21 +201,19 @@ class SessionTable extends React.Component {
       order: 'asc',
       orderBy: 'conf_start_ts',
       selected: [],
-      data:   createData1(test_data).sort((a, b) => (a.conf_start_ts < b.conf_start_ts ? -1 : 1)),
+      data:   createDataSession(test_data).sort((a, b) => (a.conf_start_ts < b.conf_start_ts ? -1 : 1)),
       page: 0,
       rowsPerPage: 5,
       hub_id: props.hub_id,
     };
-    console.log(this.state.hub_id)
   }
 
   componentDidMount  = () => {
-    fetch('/api/public/card/ed0141ce-857d-4972-8967-1a57206719d3/query?parameters=%5B%7B%22type%22%3A%22category%22%2C%22target%22%3A%5B%22variable%22%2C%5B%22template-tag%22%2C%22rcv_hub_id%22%5D%5D%2C%22value%22%3A%22' + this.state.hub_id + '%22%7D%5D')
+    fetch('/rcv-api/public/card/34bf081e-c2ad-4865-ac35-4d0f71a7c4fe/query?parameters=%5B%7B%22type%22%3A%22category%22%2C%22target%22%3A%5B%22variable%22%2C%5B%22template-tag%22%2C%22rcv_hub_id%22%5D%5D%2C%22value%22%3A%22' + this.state.hub_id + '%22%7D%5D')
     .then(function(response) {
     return response.json()
     }).then(function(json) {
-    console.log('parsed json', json.data.rows)
-    const data_new = createData1(json.data.rows).sort((a, b) => (a.conf_start_ts < b.conf_start_ts ? -1 : 1));
+    const data_new = createDataSession(json.data.rows).sort((a, b) => (a.conf_start_ts < b.conf_start_ts ? -1 : 1));
     this.setState( { data: data_new });
     }.bind(this)).catch(function(ex) {
     console.log('parsing failed', ex)
@@ -257,7 +254,7 @@ class SessionTable extends React.Component {
     const { selected, data } = this.state;
     var cc = data.map(function (img) { return img.id; }).indexOf(id);
     this.props.changeTabHub('three')
-    
+
     console.log(data[cc].session_id);
     this.props.session_id(data[cc].session_id)
 
